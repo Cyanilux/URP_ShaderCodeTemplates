@@ -270,8 +270,8 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			#pragma fragment ShadowPassFragment
 
 			// Material Keywords
-			#pragma shader_feature _ALPHATEST_ON
-			#pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
@@ -314,8 +314,8 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			#pragma fragment DepthOnlyFragment
 
 			// Material Keywords
-			#pragma shader_feature _ALPHATEST_ON
-			#pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
@@ -535,6 +535,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 				Varyings output;
 				output.positionCS = MetaVertexPosition(input.positionOS, input.uv1, input.uv2, unity_LightmapST, unity_DynamicLightmapST);
 				output.uv = TRANSFORM_TEX(input.uv0, _BaseMap);
+				output.color = input.color;
 				return output;
 			}
 

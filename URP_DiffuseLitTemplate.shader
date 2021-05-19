@@ -35,18 +35,18 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			#pragma fragment LitPassFragment
 
 			// Material Keywords
-			#pragma shader_feature _NORMALMAP
-			#pragma shader_feature _ALPHATEST_ON
-			#pragma shader_feature _ALPHAPREMULTIPLY_ON
-			#pragma shader_feature _EMISSION
-			#pragma shader_feature _METALLICSPECGLOSSMAP
-			#pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-			#pragma shader_feature _OCCLUSIONMAP
+			#pragma shader_feature_local _NORMALMAP
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
+			#pragma shader_feature_local_fragment _EMISSION
+			#pragma shader_feature_local_fragment _METALLICSPECGLOSSMAP
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _OCCLUSIONMAP
 
-			#pragma shader_feature _SPECULARHIGHLIGHTS_OFF
-			#pragma shader_feature _ENVIRONMENTREFLECTIONS_OFF
-			#pragma shader_feature _SPECULAR_SETUP
-			#pragma shader_feature _RECEIVE_SHADOWS_OFF
+			#pragma shader_feature_local_fragment _SPECULARHIGHLIGHTS_OFF
+			#pragma shader_feature_local_fragment _ENVIRONMENTREFLECTIONS_OFF
+			#pragma shader_feature_local_fragment _SPECULAR_SETUP
+			#pragma shader_feature_local _RECEIVE_SHADOWS_OFF
 
 			// URP Keywords
 			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
@@ -157,8 +157,8 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			#pragma fragment ShadowPassFragment
 
 			// Material Keywords
-			#pragma shader_feature _ALPHATEST_ON
-			#pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
@@ -201,8 +201,8 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			#pragma fragment DepthOnlyFragment
 
 			// Material Keywords
-			#pragma shader_feature _ALPHATEST_ON
-			#pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing

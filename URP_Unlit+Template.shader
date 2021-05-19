@@ -8,12 +8,15 @@ Shader "Cyanilux/URPTemplates/Unlit+ShaderExample" {
 		_BaseColor ("Example Colour", Color) = (0, 0.66, 0.73, 1)
 		[Toggle(_ALPHATEST_ON)] _AlphaTestToggle ("Alpha Clipping", Float) = 0
 		_Cutoff ("Alpha Cutoff", Float) = 0.5
+
+		[HideInInspector] _Cull("__cull", Float) = 2.0
 	}
 	SubShader {
 		Tags {
 			"RenderPipeline"="UniversalPipeline"
 			"RenderType"="Opaque"
 			"Queue"="Geometry"
+			"UniversalMaterialType" = "Lit" "IgnoreProjector" = "True"
 		}
 
 		HLSLINCLUDE
@@ -93,6 +96,8 @@ Shader "Cyanilux/URPTemplates/Unlit+ShaderExample" {
 
 			ZWrite On
 			ZTest LEqual
+			ColorMask 0
+			Cull[_Cull]
 
 			HLSLPROGRAM
 			#pragma vertex ShadowPassVertex
@@ -189,8 +194,8 @@ Shader "Cyanilux/URPTemplates/Unlit+ShaderExample" {
 
 			// Material Keywords
 			#pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
-            #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+            #pragma shader_feature _ALPHATEST_ON
+            #pragma shader_feature _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
