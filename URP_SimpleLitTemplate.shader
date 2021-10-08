@@ -92,6 +92,7 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 				float4 positionOS	: POSITION;
 				float4 normalOS		: NORMAL;
 				float2 uv		    : TEXCOORD0;
+				float2 lightmapUV	: TEXCOORD1;
 				float4 color		: COLOR;
 				//UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -138,10 +139,13 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 					specularSmoothness = specColor;
 				#endif
 
-				#ifdef _GLOSSINESS_FROM_BASE_ALPHA
-					specularSmoothness.a = exp2(10 * alpha + 1);
-				#else
-					specularSmoothness.a = exp2(10 * specularSmoothness.a + 1);
+				#if UNITY_VERSION >= 202120 // or #if SHADER_LIBRARY_VERSION_MAJOR < 12, but that versioning method is deprecated for newer versions
+					// v12 is changing this, so it's calculated later. Likely so that smoothness value stays 0-1 so it can display better for debug views.
+					#ifdef _GLOSSINESS_FROM_BASE_ALPHA
+						specularSmoothness.a = exp2(10 * alpha + 1);
+					#else
+						specularSmoothness.a = exp2(10 * specularSmoothness.a + 1);
+					#endif
 				#endif
 				return specularSmoothness;
 			}
