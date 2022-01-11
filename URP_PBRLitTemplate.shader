@@ -136,6 +136,9 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 
 			struct Attributes {
 				float4 positionOS	: POSITION;
+				#ifdef _NORMALMAP
+					float4 tangentOS 	: TANGENT;
+				#endif
 				float4 normalOS		: NORMAL;
 				float2 uv		    : TEXCOORD0;
 				float2 lightmapUV	: TEXCOORD1;
@@ -187,7 +190,11 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 				//UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 
 				VertexPositionInputs positionInputs = GetVertexPositionInputs(IN.positionOS.xyz);
-				VertexNormalInputs normalInputs = GetVertexNormalInputs(IN.normalOS.xyz);
+				#ifdef _NORMALMAP
+					VertexNormalInputs normalInputs = GetVertexNormalInputs(IN.normalOS.xyz, IN.tangentOS);
+				#else
+					VertexNormalInputs normalInputs = GetVertexNormalInputs(IN.normalOS.xyz);
+				#endif
 
 				OUT.positionCS = positionInputs.positionCS;
 				OUT.positionWS = positionInputs.positionWS;

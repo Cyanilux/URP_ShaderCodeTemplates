@@ -91,7 +91,11 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 			struct Attributes {
 				float4 positionOS	: POSITION;
 				float4 normalOS		: NORMAL;
+				#ifdef _NORMALMAP
+					float4 tangentOS 	: TANGENT;
+				#endif
 				float2 uv		    : TEXCOORD0;
+				float2 lightmapUV	: TEXCOORD1;
 				float4 color		: COLOR;
 				//UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -138,10 +142,13 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 					specularSmoothness = specColor;
 				#endif
 
-				#ifdef _GLOSSINESS_FROM_BASE_ALPHA
-					specularSmoothness.a = exp2(10 * alpha + 1);
-				#else
-					specularSmoothness.a = exp2(10 * specularSmoothness.a + 1);
+				#if UNITY_VERSION >= 202120 // or #if SHADER_LIBRARY_VERSION_MAJOR < 12, but that versioning method is deprecated for newer versions
+					// v12 is changing this, so it's calculated later. Likely so that smoothness value stays 0-1 so it can display better for debug views.
+					#ifdef _GLOSSINESS_FROM_BASE_ALPHA
+						specularSmoothness.a = exp2(10 * alpha + 1);
+					#else
+						specularSmoothness.a = exp2(10 * specularSmoothness.a + 1);
+					#endif
 				#endif
 				return specularSmoothness;
 			}
@@ -182,8 +189,8 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 				#endif
 
 				inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
-				viewDirWS = SafeNormalize(viewDirWS);
 
+				viewDirWS = SafeNormalize(viewDirWS);
 				inputData.viewDirectionWS = viewDirWS;
 
 				#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)
@@ -227,7 +234,12 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 				//UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(OUT);
 
 				VertexPositionInputs positionInputs = GetVertexPositionInputs(IN.positionOS.xyz);
-				VertexNormalInputs normalInputs = GetVertexNormalInputs(IN.normalOS.xyz);
+				#ifdef _NORMALMAP
+					VertexNormalInputs normalInputs = GetVertexNormalInputs(IN.normalOS.xyz, IN.tangentOS);
+				#else
+					VertexNormalInputs normalInputs = GetVertexNormalInputs(IN.normalOS.xyz);
+				#endif
+				
 
 				OUT.positionCS = positionInputs.positionCS;
 				OUT.positionWS = positionInputs.positionWS;

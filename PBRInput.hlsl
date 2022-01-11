@@ -48,16 +48,16 @@ void InitializeInputData(Varyings input, half3 normalTS, out InputData inputData
 	inputData.positionWS = input.positionWS;
 
 	#ifdef _NORMALMAP
-		half3 viewDirWS = half3(input.normalWS.w, input.tangentWS.w, input.bitangentWS.w);
-		inputData.normalWS = TransformTangentToWorld(normalTS,half3x3(input.tangentWS.xyz, input.bitangentWS.xyz, input.normalWS.xyz));
+		half3 viewDirWS = half3(input.normalWS.w, input.tangentWS.w, input.bitangentWS.w); // viewDir has been stored in w components of these in vertex shader
+		inputData.normalWS = TransformTangentToWorld(normalTS, half3x3(input.tangentWS.xyz, input.bitangentWS.xyz, input.normalWS.xyz));
 	#else
 		half3 viewDirWS = GetWorldSpaceNormalizeViewDir(inputData.positionWS);
 		inputData.normalWS = input.normalWS;
 	#endif
 
 	inputData.normalWS = NormalizeNormalPerPixel(inputData.normalWS);
-	viewDirWS = SafeNormalize(viewDirWS);
 
+	viewDirWS = SafeNormalize(viewDirWS);
 	inputData.viewDirectionWS = viewDirWS;
 
 	#if defined(REQUIRES_VERTEX_SHADOW_COORD_INTERPOLATOR)

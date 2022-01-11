@@ -76,6 +76,7 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 				float4 positionOS	: POSITION;
 				float4 normalOS		: NORMAL;
 				float2 uv		    : TEXCOORD0;
+				float2 lightmapUV	: TEXCOORD1;
 				float4 color		: COLOR;
 			};
 
