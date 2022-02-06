@@ -19,7 +19,7 @@ TEXTURE2D(_OcclusionMap); 			SAMPLER(sampler_OcclusionMap);
 half4 SampleMetallicSpecGloss(float2 uv, half albedoAlpha) {
 	half4 specGloss;
 	#ifdef _METALLICSPECGLOSSMAP
-		specGloss = SAMPLE_TEXTURE2D(_MetallicSpecGlossMap, sampler_MetallicSpecGlossMap, uv)
+		specGloss = SAMPLE_TEXTURE2D(_MetallicSpecGlossMap, sampler_MetallicSpecGlossMap, uv);
 		#ifdef _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 			specGloss.a = albedoAlpha * _Smoothness;
 		#else
