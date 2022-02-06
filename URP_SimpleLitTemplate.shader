@@ -5,21 +5,21 @@
 Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 	Properties {
 		[MainTexture] _BaseMap("Base Map (RGB) Smoothness / Alpha (A)", 2D) = "white" {}
-        [MainColor]   _BaseColor("Base Color", Color) = (1, 1, 1, 1)
+		[MainColor]   _BaseColor("Base Color", Color) = (1, 1, 1, 1)
 
 		[Toggle(_NORMALMAP)] _NormalMapToggle ("Normal Mapping", Float) = 0
 		[NoScaleOffset] _BumpMap("Normal Map", 2D) = "bump" {}
 
 		[HDR] _EmissionColor("Emission Color", Color) = (0,0,0)
 		[Toggle(_EMISSION)] _Emission ("Emission", Float) = 0
-        [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "white" {}
+		[NoScaleOffset]_EmissionMap("Emission Map", 2D) = "white" {}
 
 		[Toggle(_ALPHATEST_ON)] _AlphaTestToggle ("Alpha Clipping", Float) = 0
 		_Cutoff ("Alpha Cutoff", Float) = 0.5
 
 		[Toggle(_SPECGLOSSMAP)] _SpecGlossMapToggle ("Use Specular Gloss Map", Float) = 0
-        _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 0.5)
-        _SpecGlossMap("Specular Map", 2D) = "white" {}
+		_SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 0.5)
+		_SpecGlossMap("Specular Map", 2D) = "white" {}
 		[Toggle(_GLOSSINESS_FROM_BASE_ALPHA)] _GlossSource ("Glossiness Source, from Albedo Alpha (if on) vs from Specular (if off)", Float) = 0
 		_Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
 	}
@@ -31,16 +31,16 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 		}
 
 		HLSLINCLUDE
-			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+		#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-			CBUFFER_START(UnityPerMaterial)
-			float4 _BaseMap_ST;
-			float4 _BaseColor;
-			float4 _EmissionColor;
-			float4 _SpecColor;
-			float _Cutoff;
-			float _Smoothness;
-			CBUFFER_END
+		CBUFFER_START(UnityPerMaterial)
+		float4 _BaseMap_ST;
+		float4 _BaseColor;
+		float4 _EmissionColor;
+		float4 _SpecColor;
+		float _Cutoff;
+		float _Smoothness;
+		CBUFFER_END
 		ENDHLSL
 
 		Pass {
@@ -53,15 +53,15 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 
 			// Material Keywords
 			#pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local_fragment _EMISSION
-            #pragma shader_feature_local _RECEIVE_SHADOWS_OFF
-            //#pragma shader_feature_local_fragment _SURFACE_TYPE_TRANSPARENT
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
-            #pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
-            //#pragma shader_feature_local_fragment _ _SPECGLOSSMAP _SPECULAR_COLOR
+			#pragma shader_feature_local_fragment _EMISSION
+			#pragma shader_feature_local _RECEIVE_SHADOWS_OFF
+			//#pragma shader_feature_local_fragment _SURFACE_TYPE_TRANSPARENT
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _ALPHAPREMULTIPLY_ON
+			//#pragma shader_feature_local_fragment _ _SPECGLOSSMAP _SPECULAR_COLOR
 			#pragma shader_feature_local_fragment _ _SPECGLOSSMAP
 			#define _SPECULAR_COLOR // always on
-            #pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
+			#pragma shader_feature_local_fragment _GLOSSINESS_FROM_BASE_ALPHA
 
 			// URP Keywords
 			#pragma multi_compile _ _MAIN_LIGHT_SHADOWS
@@ -81,7 +81,7 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 			#pragma multi_compile_fog
 
 			// GPU Instancing (not supported)
-            //#pragma multi_compile_instancing
+			//#pragma multi_compile_instancing
 
 			// Includes
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -126,7 +126,7 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 
 				float4 color						: COLOR;
 				//UNITY_VERTEX_INPUT_INSTANCE_ID
-    			//UNITY_VERTEX_OUTPUT_STEREO
+				//UNITY_VERTEX_OUTPUT_STEREO
 			};
 
 			// Textures, Samplers & Global Properties
@@ -204,7 +204,7 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 				// Fog
 				#ifdef _ADDITIONAL_LIGHTS_VERTEX
 					inputData.fogCoord = input.fogFactorAndVertexLight.x;
-    				inputData.vertexLighting = input.fogFactorAndVertexLight.yzw;
+					inputData.vertexLighting = input.fogFactorAndVertexLight.yzw;
 				#else
 					inputData.fogCoord = input.fogFactor;
 					inputData.vertexLighting = half3(0, 0, 0);
@@ -278,7 +278,7 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 			// Fragment Shader
 			half4 LitPassFragment(Varyings IN) : SV_Target {
 				//UNITY_SETUP_INSTANCE_ID(IN);
-    			//UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
+				//UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
 
 				// Setup SurfaceData
 				SurfaceData surfaceData;
@@ -291,7 +291,7 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 				// Simple Lighting (Lambert & BlinnPhong)
 				//half4 color = UniversalFragmentBlinnPhong(inputData, surfaceData); // v12 only
 				half4 color = UniversalFragmentBlinnPhong(inputData, surfaceData.albedo, half4(surfaceData.specular, 1), 
-					surfaceData.smoothness, surfaceData.emission, surfaceData.alpha);
+				surfaceData.smoothness, surfaceData.emission, surfaceData.alpha);
 				// See Lighting.hlsl to see how this is implemented.
 				// https://github.com/Unity-Technologies/Graphics/blob/master/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl
 
@@ -302,7 +302,7 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 			ENDHLSL
 		}
 
-				// UsePass "Universal Render Pipeline/Lit/ShadowCaster"
+		// UsePass "Universal Render Pipeline/Lit/ShadowCaster"
 		// UsePass "Universal Render Pipeline/Lit/DepthOnly"
 		// Would be nice if we could just use the passes from existing shaders,
 		// However this breaks SRP Batcher compatibility. Instead, we should define them :
@@ -327,9 +327,9 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 			#pragma multi_compile_instancing
 			//#pragma multi_compile _ DOTS_INSTANCING_ON
 
-            // Universal Pipeline keywords
-            // This is used during shadow map generation to differentiate between directional and punctual light shadows, as they use different formulas to apply Normal Bias
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+			// Universal Pipeline Keywords
+			// (v11+) This is used during shadow map generation to differentiate between directional and punctual (point/spot) light shadows, as they use different formulas to apply Normal Bias
+			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
@@ -338,14 +338,14 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 			// Note if we do any vertex displacement, we'll need to change the vertex function. e.g. :
 			/*
 			#pragma vertex DisplacedShadowPassVertex (instead of ShadowPassVertex above)
- 
+			
 			Varyings DisplacedShadowPassVertex(Attributes input) {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = GetShadowPositionHClip(input);
 				return output;
@@ -382,21 +382,21 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 			// Note if we do any vertex displacement, we'll need to change the vertex function. e.g. :
 			/*
 			#pragma vertex DisplacedDepthOnlyVertex (instead of DepthOnlyVertex above)
- 
+			
 			Varyings DisplacedDepthOnlyVertex(Attributes input) {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = TransformObjectToHClip(input.position.xyz);
 				return output;
 			}
 			*/
-		
+			
 			ENDHLSL
 		}
 
@@ -414,8 +414,8 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 
 			// Material Keywords
 			#pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
-            #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
@@ -433,14 +433,14 @@ Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = TransformObjectToHClip(input.position.xyz);
 				VertexNormalInputs normalInput = GetVertexNormalInputs(input.normal, input.tangentOS);
-    			output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
+				output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
 				return output;
 			}
 			*/

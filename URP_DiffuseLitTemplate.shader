@@ -17,13 +17,13 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 		}
 
 		HLSLINCLUDE
-			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+		#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-			CBUFFER_START(UnityPerMaterial)
-			float4 _BaseMap_ST;
-			float4 _BaseColor;
-			float _Cutoff;
-			CBUFFER_END
+		CBUFFER_START(UnityPerMaterial)
+		float4 _BaseMap_ST;
+		float4 _BaseColor;
+		float _Cutoff;
+		CBUFFER_END
 		ENDHLSL
 
 		Pass {
@@ -66,7 +66,7 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			#pragma multi_compile_fog
 
 			// GPU Instancing (not supported)
-            //#pragma multi_compile_instancing
+			//#pragma multi_compile_instancing
 
 			// Includes
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -140,7 +140,7 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			ENDHLSL
 		}
 
-				// UsePass "Universal Render Pipeline/Lit/ShadowCaster"
+		// UsePass "Universal Render Pipeline/Lit/ShadowCaster"
 		// UsePass "Universal Render Pipeline/Lit/DepthOnly"
 		// Would be nice if we could just use the passes from existing shaders,
 		// However this breaks SRP Batcher compatibility. Instead, we should define them :
@@ -165,6 +165,10 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			#pragma multi_compile_instancing
 			//#pragma multi_compile _ DOTS_INSTANCING_ON
 
+			// Universal Pipeline Keywords
+			// (v11+) This is used during shadow map generation to differentiate between directional and punctual (point/spot) light shadows, as they use different formulas to apply Normal Bias
+			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+			
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
@@ -172,14 +176,14 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			// Note if we do any vertex displacement, we'll need to change the vertex function. e.g. :
 			/*
 			#pragma vertex DisplacedShadowPassVertex (instead of ShadowPassVertex above)
- 
+			
 			Varyings DisplacedShadowPassVertex(Attributes input) {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = GetShadowPositionHClip(input);
 				return output;
@@ -216,21 +220,21 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 			// Note if we do any vertex displacement, we'll need to change the vertex function. e.g. :
 			/*
 			#pragma vertex DisplacedDepthOnlyVertex (instead of DepthOnlyVertex above)
- 
+			
 			Varyings DisplacedDepthOnlyVertex(Attributes input) {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = TransformObjectToHClip(input.position.xyz);
 				return output;
 			}
 			*/
-		
+			
 			ENDHLSL
 		}
 
@@ -248,8 +252,8 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 
 			// Material Keywords
 			#pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
-            #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
@@ -267,14 +271,14 @@ Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = TransformObjectToHClip(input.position.xyz);
 				VertexNormalInputs normalInput = GetVertexNormalInputs(input.normal, input.tangentOS);
-    			output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
+				output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
 				return output;
 			}
 			*/

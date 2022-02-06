@@ -9,7 +9,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 		// Tried to organise it somewhat, with spacing to help separate related parts.
 
 		[MainTexture] _BaseMap("Base Map (RGB) Smoothness / Alpha (A)", 2D) = "white" {}
-        [MainColor]   _BaseColor("Base Color", Color) = (1, 1, 1, 1)
+		[MainColor]   _BaseColor("Base Color", Color) = (1, 1, 1, 1)
 
 		[Space(20)]
 		[Toggle(_ALPHATEST_ON)] _AlphaTestToggle ("Alpha Clipping", Float) = 0
@@ -20,9 +20,9 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 		[Toggle(_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A)] _SmoothnessSource ("Smoothness Source, Albedo Alpha (if on) vs Metallic (if off)", Float) = 0
 		_Metallic("Metallic", Range(0.0, 1.0)) = 0
 		_Smoothness("Smoothness", Range(0.0, 1.0)) = 0.5
-        _SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 0.5)
+		_SpecColor("Specular Color", Color) = (0.5, 0.5, 0.5, 0.5)
 		[Toggle(_METALLICSPECGLOSSMAP)] _MetallicSpecGlossMapToggle ("Use Metallic/Specular Gloss Map", Float) = 0
-        _MetallicSpecGlossMap("Specular or Metallic Map", 2D) = "black" {}
+		_MetallicSpecGlossMap("Specular or Metallic Map", 2D) = "black" {}
 		// Usually this is split into _SpecGlossMap and _MetallicGlossMap, but I find
 		// that a bit annoying as I'm not using a custom ShaderGUI to show/hide them.
 
@@ -41,7 +41,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 		[Space(20)]
 		[Toggle(_EMISSION)] _Emission ("Emission", Float) = 0
 		[HDR] _EmissionColor("Emission Color", Color) = (0,0,0)
-        [NoScaleOffset]_EmissionMap("Emission Map", 2D) = "black" {}
+		[NoScaleOffset]_EmissionMap("Emission Map", 2D) = "black" {}
 
 		[Space(20)]
 		[Toggle(_SPECULARHIGHLIGHTS_OFF)] _SpecularHighlights("Turn Specular Highlights Off", Float) = 0
@@ -60,19 +60,19 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 		}
 
 		HLSLINCLUDE
-			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+		#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-			CBUFFER_START(UnityPerMaterial)
-			float4 _BaseMap_ST;
-			float4 _BaseColor;
-			float4 _EmissionColor;
-			float4 _SpecColor;
-			float _Metallic;
-			float _Smoothness;
-			float _OcclusionStrength;
-			float _Cutoff;
-			float _BumpScale;
-			CBUFFER_END
+		CBUFFER_START(UnityPerMaterial)
+		float4 _BaseMap_ST;
+		float4 _BaseColor;
+		float4 _EmissionColor;
+		float4 _SpecColor;
+		float _Metallic;
+		float _Smoothness;
+		float _OcclusionStrength;
+		float _Cutoff;
+		float _BumpScale;
+		CBUFFER_END
 		ENDHLSL
 
 		Pass {
@@ -97,7 +97,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			#pragma shader_feature_local_fragment _OCCLUSIONMAP
 
 			//#pragma shader_feature_local _PARALLAXMAP // v10+ only
-            //#pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED // v10+ only
+			//#pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED // v10+ only
 			// Note, for this template not supporting parallax/height mapping or detail maps
 
 			//#pragma shader_feature_local _ _CLEARCOAT _CLEARCOATMAP // v10+ only, URP/ComplexLit shader
@@ -126,7 +126,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			#pragma multi_compile_fog
 
 			// GPU Instancing (not supported)
-            //#pragma multi_compile_instancing
+			//#pragma multi_compile_instancing
 
 			// ---------------------------------------------------------------------------
 			// Structs
@@ -236,7 +236,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			
 			half4 LitPassFragment(Varyings IN) : SV_Target {
 				//UNITY_SETUP_INSTANCE_ID(IN);
-    			//UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
+				//UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(IN);
 				
 				// Setup SurfaceData
 				SurfaceData surfaceData;
@@ -284,9 +284,9 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			#pragma multi_compile_instancing
 			//#pragma multi_compile _ DOTS_INSTANCING_ON
 
-            // Universal Pipeline keywords
-            // This is used during shadow map generation to differentiate between directional and punctual light shadows, as they use different formulas to apply Normal Bias
-            #pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
+			// Universal Pipeline Keywords
+			// (v11+) This is used during shadow map generation to differentiate between directional and punctual (point/spot) light shadows, as they use different formulas to apply Normal Bias
+			#pragma multi_compile_vertex _ _CASTING_PUNCTUAL_LIGHT_SHADOW
 
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
@@ -295,14 +295,14 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			// Note if we do any vertex displacement, we'll need to change the vertex function. e.g. :
 			/*
 			#pragma vertex DisplacedShadowPassVertex (instead of ShadowPassVertex above)
- 
+			
 			Varyings DisplacedShadowPassVertex(Attributes input) {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = GetShadowPositionHClip(input);
 				return output;
@@ -339,21 +339,21 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			// Note if we do any vertex displacement, we'll need to change the vertex function. e.g. :
 			/*
 			#pragma vertex DisplacedDepthOnlyVertex (instead of DepthOnlyVertex above)
- 
+			
 			Varyings DisplacedDepthOnlyVertex(Attributes input) {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = TransformObjectToHClip(input.position.xyz);
 				return output;
 			}
 			*/
-		
+			
 			ENDHLSL
 		}
 
@@ -371,8 +371,8 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 
 			// Material Keywords
 			#pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
-            #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
@@ -390,14 +390,14 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 				Varyings output = (Varyings)0;
 				UNITY_SETUP_INSTANCE_ID(input);
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
- 
+				
 				// Example Displacement
 				input.positionOS += float4(0, _SinTime.y, 0, 0);
- 
+				
 				output.uv = TRANSFORM_TEX(input.texcoord, _BaseMap);
 				output.positionCS = TransformObjectToHClip(input.position.xyz);
 				VertexNormalInputs normalInput = GetVertexNormalInputs(input.normal, input.tangentOS);
-    			output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
+				output.normalWS = NormalizeNormalPerVertex(normalInput.normalWS);
 				return output;
 			}
 			*/
@@ -423,8 +423,8 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 
 			// Material Keywords
 			#pragma shader_feature_local _NORMALMAP
-            #pragma shader_feature_local_fragment _ALPHATEST_ON
-            #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature_local_fragment _ALPHATEST_ON
+			#pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
 			// GPU Instancing
 			#pragma multi_compile_instancing
@@ -434,7 +434,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SurfaceInput.hlsl"
 
 			#if defined(_NORMALMAP)
-			#define REQUIRES_WORLD_SPACE_TANGENT_INTERPOLATOR
+				#define REQUIRES_WORLD_SPACE_TANGENT_INTERPOLATOR
 			#endif
 
 			struct Attributes {
@@ -451,7 +451,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 				float3 normalWS			: TEXCOORD2;
 
 				#if defined(REQUIRES_WORLD_SPACE_TANGENT_INTERPOLATOR)
-				half4 tangentWS			: TEXCOORD4;    // xyz: tangent, w: sign
+					half4 tangentWS			: TEXCOORD4;    // xyz: tangent, w: sign
 				#endif
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
@@ -473,7 +473,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 
 				#if defined(REQUIRES_WORLD_SPACE_TANGENT_INTERPOLATOR)
 					float sign = input.tangentOS.w * float(GetOddNegativeScale());
-        			half4 tangentWS = half4(normalInput.tangentWS.xyz, sign);
+					half4 tangentWS = half4(normalInput.tangentWS.xyz, sign);
 					output.tangentWS = tangentWS;
 				#endif
 
@@ -528,7 +528,7 @@ Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 				float2 uv1          : TEXCOORD1;
 				float2 uv2          : TEXCOORD2;
 				#ifdef _TANGENT_TO_WORLD
-				float4 tangentOS     : TANGENT;
+					float4 tangentOS     : TANGENT;
 				#endif
 				float4 color		: COLOR;
 			};

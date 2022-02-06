@@ -17,14 +17,14 @@ Shader "Cyanilux/URPTemplates/TransparentUnlitShaderExample" {
 		}
 
 		HLSLINCLUDE
-			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+		#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 
-			CBUFFER_START(UnityPerMaterial)
-			float4 _BaseMap_ST;
-			float4 _BaseColor;
-			//float4 _ExampleVector;
-			//float _ExampleFloat;
-			CBUFFER_END
+		CBUFFER_START(UnityPerMaterial)
+		float4 _BaseMap_ST;
+		float4 _BaseColor;
+		//float4 _ExampleVector;
+		//float _ExampleFloat;
+		CBUFFER_END
 		ENDHLSL
 
 		Pass {
