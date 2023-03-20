@@ -2,6 +2,13 @@
 // Written by @Cyanilux
 // https://www.cyanilux.com/tutorials/urp-shader-code
 
+/*
+Note : URP v12 (2021.3+) added a Depth Priming option :
+https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@12.1/manual/whats-new/urp-whats-new.html#depth-prepass-depth-priming-mode
+This may be auto/enabled in the URP project templates and as a result, this shader may appear invisible.
+Use the Unlit+ Template instead with the DepthOnly and DepthNormals passes to fix this.
+*/
+
 Shader "Cyanilux/URPTemplates/UnlitShaderExample" {
 	Properties {
 		_BaseMap ("Example Texture", 2D) = "white" {}
@@ -38,13 +45,13 @@ Shader "Cyanilux/URPTemplates/UnlitShaderExample" {
 			// Structs
 			struct Attributes {
 				float4 positionOS	: POSITION;
-				float2 uv		    : TEXCOORD0;
+				float2 uv		: TEXCOORD0;
 				float4 color		: COLOR;
 			};
 
 			struct Varyings {
 				float4 positionCS 	: SV_POSITION;
-				float2 uv		    : TEXCOORD0;
+				float2 uv		: TEXCOORD0;
 				float4 color		: COLOR;
 			};
 
@@ -68,7 +75,6 @@ Shader "Cyanilux/URPTemplates/UnlitShaderExample" {
 			// Fragment Shader
 			half4 UnlitPassFragment(Varyings IN) : SV_Target {
 				half4 baseMap = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv);
-
 				return baseMap * _BaseColor * IN.color;
 			}
 			ENDHLSL
