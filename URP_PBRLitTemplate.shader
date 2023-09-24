@@ -2,6 +2,11 @@
 // Written by @Cyanilux
 // https://www.cyanilux.com/tutorials/urp-shader-code
 
+/*
+Roughly equivalent to the URP/Lit.shader (but Forward path only)
+https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/Lit.shader
+*/
+
 Shader "Cyanilux/URPTemplates/PBRLitShaderExample" {
 	Properties {
 		// Sorry the inspector is a little messy, but I'd rather not rely on a Custom ShaderGUI
