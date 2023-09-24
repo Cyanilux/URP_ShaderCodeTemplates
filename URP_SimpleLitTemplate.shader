@@ -2,6 +2,11 @@
 // Written by @Cyanilux
 // https://www.cyanilux.com/tutorials/urp-shader-code
 
+/*
+Roughly equivalent to the URP/SimpleLit.shader (but Forward path only)
+https://github.com/Unity-Technologies/Graphics/blob/master/Packages/com.unity.render-pipelines.universal/Shaders/SimpleLit.shader
+*/
+
 Shader "Cyanilux/URPTemplates/SimpleLitShaderExample" {
 	Properties {
 		[MainTexture] _BaseMap("Base Map (RGB) Smoothness / Alpha (A)", 2D) = "white" {}
