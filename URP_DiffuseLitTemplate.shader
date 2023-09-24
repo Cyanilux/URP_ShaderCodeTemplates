@@ -2,6 +2,13 @@
 // Written by @Cyanilux
 // https://www.cyanilux.com/tutorials/urp-shader-code
 
+/* 
+This example reacts to Main Directional Light & Ambient/Baked light. 
+Ignores additional lights. 
+Diffuse/Lambert shading model. 
+No specular/smoothness/metallic/etc.
+*/
+
 Shader "Cyanilux/URPTemplates/DiffuseLitShaderExample" {
 	Properties {
 		_BaseMap ("Example Texture", 2D) = "white" {}
